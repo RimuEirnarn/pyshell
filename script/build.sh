@@ -16,7 +16,12 @@ else
     VENV="$VENV/bin/activate"
 fi
 
-source "$VENV"
+if [ -f "$VENV" ]; then
+    . "$VENV"
+else
+    python -m venv .venv
+    . "$VENV"
+fi
 
 pyinstaller --version 2> /dev/null > /dev/null
 [ ! "$?" = "0" ] && pip install pyinstaller
