@@ -1,0 +1,17 @@
+#!/usr/local/bin/pyshell
+set DEBUG=true
+
+# Python
+python -c "print('Hello, World!')"
+
+# set-unset
+set a=b
+set
+unset a
+
+# invalid command
+agus
+
+# Blocking
+python
+python
