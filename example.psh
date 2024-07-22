@@ -1,0 +1,16 @@
+#!/data/data/com.termux/files/usr/bin/python3 /data/data/com.termux/files/home/Stuff/pyshell/main.py
+
+# Python
+python3 -c "print('Hello, World!')"
+
+# set-unset
+set a=b
+set
+unset a
+
+# invalid command
+agus
+
+# Blocking
+python3
+python3 
