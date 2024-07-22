@@ -8,6 +8,7 @@ from enum import IntEnum, unique
 from functools import cache
 from subprocess import Popen
 from types import FunctionType
+from argh import dispatch_command, arg
 import builtin_fns as commands
 
 
@@ -147,18 +148,18 @@ def execute_routine(program, args):
     return 0
 
 
-def main(program=None, args=None):
+@arg("program", help="pyshell (.pyshell) files")
+@arg("args", help="pyshell arguments")
+def main(program=None, *args):
     """Main routine."""
     if not program:
-        return input_routine()
-    return execute_routine(program, args)
+        sys.exit(input_routine())
+        return
+    sys.exit(execute_routine(program, args))
 
 
 if __name__ == "__main__":
     try:
-        if len(sys.argv) == 1:
-            sys.exit(main())
-        else:
-            main(sys.argv[1], sys.argv[2:])
+        dispatch_command(main, old_name_mapping_policy=False)
     except (KeyboardInterrupt, EOFError):
         pass
