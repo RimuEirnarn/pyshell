@@ -1,78 +1,20 @@
 """PyShell"""
 
 import sys
-import os
-from os.path import join as path_join, exists
+from os.path import exists
 from shlex import split as cmd_split
-from enum import IntEnum, unique
-from functools import cache
-from subprocess import Popen
 from types import FunctionType
 from argh import dispatch_command, arg
 import builtin_fns as commands
-
+from general import user_vars, execute, ShellInfo, write, query
 
 __version__ = "0.0.1"
-
-
-def execute(program, args):
-    """Execute a program with arguments."""
-    with Popen(
-        args, executable=program, stdin=sys.stdin, stdout=sys.stdout, stderr=sys.stderr
-    ) as proc:
-        proc.wait()
-
-
-def execute_pipe(program, args, stdin, stdout, stderr):
-    """Execute a program with arguments and pipe stdin/stdout."""
-    with Popen(
-        args, executable=program, stdin=stdin, stdout=stdout, stderr=stderr
-    ) as proc:
-        proc.wait()
-
-
-@cache
-def cache_query(base):
-    """Cache a query."""
-    return query(base)
-
-
-def query(base):
-    """Query a program based on PATH."""
-    for i in environ["PATH"].split(":"):
-        try:
-            listed = os.listdir(i)
-        except FileNotFoundError:
-            continue
-        if base in listed:
-            return ShellInfo.OK, path_join(i, base)
-    return ShellInfo.CMD_NOT_FOUND, ""
-
-
-@unique
-class ShellInfo(IntEnum):
-    """Shell Information"""
-
-    OK = 0
-    EXIT = -1
-    CMD_NOT_FOUND = -2
-    ERROR = -3
-
-
-user_vars = {}
-environ = os.environ
 
 cmds = {
     sym.replace("do_", "", 1): getattr(commands, sym)
     for sym in dir(commands)
     if "do_" in sym and callable(getattr(commands, sym))
 }
-
-
-def write(*args, sep=" "):
-    """Write arguments to stdout (akin to print function)"""
-    sys.stdout.write(sep.join(args))
-    sys.stdout.flush()
 
 
 def search(base: str) -> tuple[ShellInfo, str | FunctionType]:
@@ -154,14 +96,16 @@ def execute_routine(program, args):
 @arg("program", help="pyshell (.pyshell) files")
 @arg("args", help="pyshell arguments")
 @arg("-v", "--version", help="PyShell's version")
-def main(program=None, *args, version=False):
+def main(
+    program=None, *args, version=False
+):  # pylint: disable=keyword-arg-before-vararg
     """Another Python Shell"""
     if version:
         print(f"PyShell v{__version__}")
         return
     if not program:
         sys.exit(input_routine())
-        return
+        return  # pylint: disable=unreachable
     sys.exit(execute_routine(program, args))
 
 

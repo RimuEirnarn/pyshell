@@ -1,7 +1,7 @@
 """Builtin functions for PyShell"""
 
 from functools import wraps
-from main import ShellInfo, write, user_vars, environ
+from general import ShellInfo, write, user_vars, environ
 
 
 def insufficient_arg(func):
@@ -57,7 +57,7 @@ def do_export(*args):
 
 
 @insufficient_arg
-def do_unset(*args):
+def do_unset(*args):  # pylint: disable=inconsistent-return-statements
     """Unset a variable."""
     arg = args[1]
     if not arg in user_vars:
@@ -67,7 +67,7 @@ def do_unset(*args):
 
 
 @insufficient_arg
-def do_unexport(*args):
+def do_unexport(*args):  # pylint: disable=inconsistent-return-statements
     """Unset an environment variable."""
     arg = args[1]
     if not arg in environ:
