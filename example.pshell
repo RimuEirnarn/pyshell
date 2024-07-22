@@ -13,5 +13,5 @@ unset a
 agus
 
 # Blocking
-python
-python
+printf "Hahaha!!!\n"
+sleep 2
