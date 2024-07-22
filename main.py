@@ -12,6 +12,9 @@ from argh import dispatch_command, arg
 import builtin_fns as commands
 
 
+__version__ = "0.0.1"
+
+
 def execute(program, args):
     """Execute a program with arguments."""
     with Popen(
@@ -150,8 +153,12 @@ def execute_routine(program, args):
 
 @arg("program", help="pyshell (.pyshell) files")
 @arg("args", help="pyshell arguments")
-def main(program=None, *args):
-    """Main routine."""
+@arg("-v", "--version", help="PyShell's version")
+def main(program=None, *args, version=False):
+    """Another Python Shell"""
+    if version:
+        print(f"PyShell v{__version__}")
+        return
     if not program:
         sys.exit(input_routine())
         return
