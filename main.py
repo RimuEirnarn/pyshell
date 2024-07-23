@@ -8,7 +8,7 @@ from argh import dispatch_command, arg
 import builtin_fns as commands
 from general import user_vars, execute, ShellInfo, write, query
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 
 cmds = {
     sym.replace("do_", "", 1): getattr(commands, sym)
