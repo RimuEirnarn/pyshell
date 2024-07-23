@@ -7,7 +7,6 @@ from enum import IntEnum, unique
 from functools import cache
 from subprocess import Popen
 
-
 def execute(program, args):
     """Execute a program with arguments."""
     with Popen(
